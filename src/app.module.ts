@@ -4,6 +4,7 @@ import { ScheduleModule } from "@nestjs/schedule"
 
 import { AddressesModule } from "./modules/addresses/addresses.module"
 import { AuthModule } from "./modules/auth/auth.module"
+import { CartModule } from "./modules/cart/cart.module"
 import { CategoriesModule } from "./modules/categories/categories.module"
 import { CronModule } from "./modules/cron/cron.module"
 import { EmailModule } from "./modules/email/email.module"
@@ -25,6 +26,7 @@ import { PrismaModule } from "./prisma/prisma.module"
     CategoriesModule,
     ProductsModule,
     AddressesModule,
+    CartModule,
   ],
 })
 export class AppModule {}

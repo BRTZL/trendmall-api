@@ -25,7 +25,7 @@ model User {
   role          UserRole  @default(CUSTOMER)
 
   addresses Address[]
-  cart      Cart?
+  cartItems CartItem[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -75,21 +75,8 @@ model Product {
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
 
-  orderItems OrderItem[] @ignore
-  cartItems  CartItem[]  @ignore
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-}
-
-model Cart {
-  id String @id @default(uuid())
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
-
-  items CartItem[]
+  orderItems OrderItem[]
+  cartItems  CartItem[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -99,16 +86,16 @@ model Cart {
 model CartItem {
   id       String @id @default(uuid())
   quantity Int
-  price    Int // Price multiplied by 100 to store decimal values
 
-  cart      Cart    @relation(fields: [cartId], references: [id])
-  cartId    String
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
   product   Product @relation(fields: [productId], references: [id])
   productId String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId])
 }
 
 enum OrderStatus {
