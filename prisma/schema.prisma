@@ -58,6 +58,7 @@ model Category {
   parentId       String?
 
   subCategories Category[] @relation(name: "CategoryToParentCategory")
+  products      Product[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -70,6 +71,9 @@ model Product {
   description String
   price       Int // Price multiplied by 100 to store decimal values
   stock       Int
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
 
   orderItems OrderItem[] @ignore
   cartItems  CartItem[]  @ignore
