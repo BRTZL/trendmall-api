@@ -1,7 +1,14 @@
-import { Body, Controller, Delete, Get, Patch } from "@nestjs/common"
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+} from "@nestjs/common"
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags } from "@nestjs/swagger"
 
-import { IdParam } from "@decorators/id-param"
 import { User } from "@decorators/user"
 
 import { UpdateUserDto } from "./dto/update-user.dto"
@@ -22,20 +29,23 @@ export class UsersController {
 
   @Get(":id")
   @ApiOkResponse({ type: UserEntity })
-  findOne(@IdParam("id") id: string) {
+  findOne(@Param("id", ParseUUIDPipe) id: string) {
     return this.usersService.findOneById(id)
   }
 
   @Patch(":id")
   @ApiOkResponse({ type: UserEntity })
   @ApiBody({ type: UpdateUserDto })
-  update(@IdParam("id") id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Param("id", ParseUUIDPipe) id: string,
+    @Body() updateUserDto: UpdateUserDto
+  ) {
     return this.usersService.update(id, updateUserDto)
   }
 
   @Delete(":id")
   @ApiOkResponse({ type: UserEntity })
-  remove(@IdParam("id") id: string) {
+  remove(@Param("id", ParseUUIDPipe) id: string) {
     return this.usersService.remove(id)
   }
 }

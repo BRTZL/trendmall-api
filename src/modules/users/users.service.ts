@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
 
 import { Prisma, User } from "@prisma/client"
 
@@ -25,8 +25,8 @@ export class UsersService {
     })
   }
 
-  findOneById(id: string): Promise<UserEntity> {
-    return this.prisma.user.findUnique({
+  async findOneById(id: string): Promise<UserEntity> {
+    const user = await this.prisma.user.findUnique({
       where: {
         id,
         deletedAt: null,
@@ -40,10 +40,16 @@ export class UsersService {
         updatedAt: true,
       },
     })
+
+    if (!user) {
+      throw new NotFoundException("User not found")
+    }
+
+    return user
   }
 
-  findOneByEmail(email: string): Promise<UserEntity> {
-    return this.prisma.user.findUnique({
+  async findOneByEmail(email: string): Promise<UserEntity> {
+    const user = await this.prisma.user.findUnique({
       where: {
         email,
         deletedAt: null,
@@ -57,10 +63,16 @@ export class UsersService {
         updatedAt: true,
       },
     })
+
+    if (!user) {
+      throw new NotFoundException("User not found")
+    }
+
+    return user
   }
 
-  findRoleById(id: string): Promise<Pick<User, "role">> {
-    return this.prisma.user.findUnique({
+  async findRoleById(id: string): Promise<Pick<User, "role">> {
+    const user = await this.prisma.user.findUnique({
       where: {
         id,
         deletedAt: null,
@@ -69,12 +81,18 @@ export class UsersService {
         role: true,
       },
     })
+
+    if (!user) {
+      throw new NotFoundException("User not found")
+    }
+
+    return user
   }
 
-  findOneByEmailWithPassword(
+  async findOneByEmailWithPassword(
     email: string
   ): Promise<Pick<User, "id" | "email" | "password">> {
-    return this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         email,
         deletedAt: null,
@@ -85,9 +103,17 @@ export class UsersService {
         password: true,
       },
     })
+
+    if (!user) {
+      throw new NotFoundException("User not found")
+    }
+
+    return user
   }
 
-  update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
+    await this.findOneById(id)
+
     return this.prisma.user.update({
       where: {
         id,
@@ -105,7 +131,9 @@ export class UsersService {
     })
   }
 
-  remove(id: string): Promise<UserEntity> {
+  async remove(id: string): Promise<UserEntity> {
+    await this.findOneById(id)
+
     return this.prisma.user.update({
       where: {
         id,
