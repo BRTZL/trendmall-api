@@ -2,6 +2,8 @@ import { Test, TestingModule } from "@nestjs/testing"
 
 import { PrismaService } from "src/prisma/prisma.service"
 
+import { CategoriesService } from "@modules/categories/categories.service"
+
 import { CreateProductDto } from "./dto/create-product.dto"
 import { UpdateProductDto } from "./dto/update-product.dto"
 import { ProductEntity } from "./entities/product.entity"
@@ -16,13 +18,16 @@ const mockPrismaService = {
   },
 }
 
+const mockCategoriesService = {
+  findOneById: jest.fn(),
+}
+
 const product: ProductEntity = {
   id: "1",
   name: "Test Product",
   description: "Test Description",
   price: 100,
   stock: 10,
-  categoryId: "2",
   category: {
     id: "2",
     name: "Test Category",
@@ -43,6 +48,7 @@ describe("ProductsService", () => {
       providers: [
         ProductsService,
         { provide: PrismaService, useValue: mockPrismaService },
+        { provide: CategoriesService, useValue: mockCategoriesService },
       ],
     }).compile()
 
@@ -89,7 +95,6 @@ describe("ProductsService", () => {
           description: true,
           price: true,
           stock: true,
-          categoryId: true,
           category: {
             select: {
               id: true,
@@ -123,7 +128,6 @@ describe("ProductsService", () => {
           description: true,
           price: true,
           stock: true,
-          categoryId: true,
           category: {
             select: {
               id: true,
@@ -158,7 +162,6 @@ describe("ProductsService", () => {
           description: true,
           price: true,
           stock: true,
-          categoryId: true,
           category: {
             select: {
               id: true,
@@ -207,7 +210,6 @@ describe("ProductsService", () => {
           description: true,
           price: true,
           stock: true,
-          categoryId: true,
           category: {
             select: {
               id: true,
@@ -245,7 +247,6 @@ describe("ProductsService", () => {
           description: true,
           price: true,
           stock: true,
-          categoryId: true,
           category: {
             select: {
               id: true,

@@ -4,7 +4,9 @@ import { Product as ProductModel } from "@prisma/client"
 
 import { CategoryEntity } from "@modules/categories/entities/category.entity"
 
-export class ProductEntity implements Omit<ProductModel, "deletedAt"> {
+export class ProductEntity
+  implements Omit<ProductModel, "categoryId" | "deletedAt">
+{
   @ApiProperty()
   id: string
 
@@ -19,9 +21,6 @@ export class ProductEntity implements Omit<ProductModel, "deletedAt"> {
 
   @ApiProperty()
   stock: number
-
-  @ApiProperty()
-  categoryId: string
 
   @ApiProperty({
     type: CategoryEntity,

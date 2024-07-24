@@ -16,7 +16,6 @@ describe("ProductsController", () => {
     description: "Test Description",
     price: 100,
     stock: 10,
-    categoryId: "2",
     category: {
       id: "2",
       name: "Test Category",

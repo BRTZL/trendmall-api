@@ -26,7 +26,6 @@ export class ProductsService {
         description: true,
         price: true,
         stock: true,
-        categoryId: true,
         category: {
           select: {
             id: true,
@@ -53,7 +52,6 @@ export class ProductsService {
         description: true,
         price: true,
         stock: true,
-        categoryId: true,
         category: {
           select: {
             id: true,
@@ -81,7 +79,6 @@ export class ProductsService {
         description: true,
         price: true,
         stock: true,
-        categoryId: true,
         category: {
           select: {
             id: true,
@@ -121,7 +118,6 @@ export class ProductsService {
         description: true,
         price: true,
         stock: true,
-        categoryId: true,
         category: {
           select: {
             id: true,
@@ -153,7 +149,6 @@ export class ProductsService {
         description: true,
         price: true,
         stock: true,
-        categoryId: true,
         category: {
           select: {
             id: true,

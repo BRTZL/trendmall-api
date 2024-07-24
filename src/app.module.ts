@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common"
 import { ConfigModule } from "@nestjs/config"
 import { ScheduleModule } from "@nestjs/schedule"
 
+import { AddressesModule } from "./modules/addresses/addresses.module"
 import { AuthModule } from "./modules/auth/auth.module"
 import { CategoriesModule } from "./modules/categories/categories.module"
 import { CronModule } from "./modules/cron/cron.module"
@@ -23,6 +24,7 @@ import { PrismaModule } from "./prisma/prisma.module"
     CronModule,
     CategoriesModule,
     ProductsModule,
+    AddressesModule,
   ],
 })
 export class AppModule {}
