@@ -8,6 +8,7 @@ import { CartModule } from "./modules/cart/cart.module"
 import { CategoriesModule } from "./modules/categories/categories.module"
 import { CronModule } from "./modules/cron/cron.module"
 import { EmailModule } from "./modules/email/email.module"
+import { OrdersModule } from "./modules/orders/orders.module"
 import { ProductsModule } from "./modules/products/products.module"
 import { UsersModule } from "./modules/users/users.module"
 import { PrismaModule } from "./prisma/prisma.module"
@@ -27,6 +28,7 @@ import { PrismaModule } from "./prisma/prisma.module"
     ProductsModule,
     AddressesModule,
     CartModule,
+    OrdersModule,
   ],
 })
 export class AppModule {}

@@ -39,6 +39,4 @@ export class CartController {
   getCart(@User("id") userId: string) {
     return this.cartService.getCart(userId)
   }
-
-  // Checkout?
 }
