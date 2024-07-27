@@ -8,13 +8,25 @@ import {
   Patch,
   Post,
 } from "@nestjs/common"
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags } from "@nestjs/swagger"
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiQuery,
+  ApiTags,
+} from "@nestjs/swagger"
 
+import {
+  ProductPagination,
+  ProductPaginationResult,
+} from "@decorators/pagination"
 import { Public } from "@decorators/public"
 import { Roles } from "@decorators/roles"
 
 import { CreateProductDto } from "./dto/create-product.dto"
+import { ProductPaginationDto } from "./dto/product-pagination.dto"
 import { UpdateProductDto } from "./dto/update-product.dto"
+import { PaginationProductEntity } from "./entities/paginated-product.entity"
 import { ProductEntity } from "./entities/product.entity"
 import { ProductsService } from "./products.service"
 
@@ -33,10 +45,11 @@ export class ProductsController {
   }
 
   @Get()
-  @ApiOkResponse({ type: ProductEntity, isArray: true })
+  @ApiOkResponse({ type: PaginationProductEntity })
+  @ApiQuery({ type: ProductPaginationDto })
   @Public()
-  findAll() {
-    return this.productsService.findAll()
+  findAll(@ProductPagination() pagination: ProductPaginationResult) {
+    return this.productsService.findAll(pagination)
   }
 
   @Get(":id")
