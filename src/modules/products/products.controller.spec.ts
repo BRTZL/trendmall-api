@@ -71,7 +71,12 @@ describe("ProductsController", () => {
 
   describe("findAll", () => {
     it("should return an array of products", async () => {
-      const result = await controller.findAll()
+      const result = await controller.findAll({
+        page: 1,
+        limit: 10,
+        skip: 0,
+        filters: {},
+      })
       expect(result).toEqual([mockProduct])
       expect(service.findAll).toHaveBeenCalled()
     })

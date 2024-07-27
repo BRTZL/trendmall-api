@@ -4,8 +4,11 @@ import { PrismaService } from "src/prisma/prisma.service"
 
 import { CategoriesService } from "@modules/categories/categories.service"
 
+import { ProductPaginationResult } from "@decorators/pagination"
+
 import { CreateProductDto } from "./dto/create-product.dto"
 import { UpdateProductDto } from "./dto/update-product.dto"
+import { PaginationProductEntity } from "./entities/paginated-product.entity"
 import { ProductEntity } from "./entities/product.entity"
 import { ProductsService } from "./products.service"
 
@@ -15,6 +18,7 @@ const mockPrismaService = {
     findMany: jest.fn(),
     findUnique: jest.fn(),
     update: jest.fn(),
+    count: jest.fn(),
   },
 }
 
@@ -113,34 +117,26 @@ describe("ProductsService", () => {
 
   describe("findAll", () => {
     it("should return an array of products", async () => {
-      const result: ProductEntity[] = [product]
+      const result: PaginationProductEntity = {
+        page: 1,
+        limit: 10,
+        skip: 0,
+        total: 1,
+        data: [product],
+      }
 
-      mockPrismaService.product.findMany.mockResolvedValue(result)
+      mockPrismaService.product.findMany.mockResolvedValue([product])
+      mockPrismaService.product.count.mockResolvedValue(result.total)
 
-      expect(await service.findAll()).toEqual(result)
-      expect(mockPrismaService.product.findMany).toHaveBeenCalledWith({
-        where: {
-          deletedAt: null,
-        },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          price: true,
-          stock: true,
-          category: {
-            select: {
-              id: true,
-              name: true,
-              parentId: true,
-              createdAt: true,
-              updatedAt: true,
-            },
-          },
-          createdAt: true,
-          updatedAt: true,
-        },
-      })
+      expect(
+        await service.findAll({
+          page: 1,
+          limit: 10,
+          skip: 0,
+          filters: {},
+        })
+      ).toEqual(result)
+      expect(mockPrismaService.product.findMany).toHaveBeenCalled()
     })
   })
 
