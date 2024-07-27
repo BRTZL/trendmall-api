@@ -24,7 +24,24 @@ export class ProductsService {
     await this.categoriesService.findOneById(createProductDto.categoryId)
 
     return this.prisma.product.create({
-      data: createProductDto,
+      data: {
+        name: createProductDto.name,
+        description: createProductDto.description,
+        price: createProductDto.price,
+        stock: createProductDto.stock,
+        category: {
+          connect: {
+            id: createProductDto.categoryId,
+          },
+        },
+        images: {
+          createMany: {
+            data: createProductDto.images.map((url) => ({
+              url,
+            })),
+          },
+        },
+      },
       select: {
         id: true,
         name: true,
@@ -36,6 +53,14 @@ export class ProductsService {
             id: true,
             name: true,
             parentId: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+        images: {
+          select: {
+            id: true,
+            url: true,
             createdAt: true,
             updatedAt: true,
           },
@@ -98,6 +123,14 @@ export class ProductsService {
               updatedAt: true,
             },
           },
+          images: {
+            select: {
+              id: true,
+              url: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+          },
           createdAt: true,
           updatedAt: true,
         },
@@ -136,6 +169,14 @@ export class ProductsService {
             updatedAt: true,
           },
         },
+        images: {
+          select: {
+            id: true,
+            url: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
         createdAt: true,
         updatedAt: true,
       },
@@ -152,14 +193,41 @@ export class ProductsService {
     id: string,
     updateProductDto: UpdateProductDto
   ): Promise<ProductEntity> {
-    await this.findOneById(id)
+    const product = await this.findOneById(id)
+
+    const addedImages = updateProductDto.images.filter(
+      (url) => !product.images.find((p) => p.url === url)
+    )
+    const removedImages = product.images.filter(
+      (image) => !updateProductDto.images.find((url) => url === image.url)
+    )
 
     return this.prisma.product.update({
       where: {
         id,
         deletedAt: null,
       },
-      data: updateProductDto,
+      data: {
+        name: updateProductDto.name,
+        description: updateProductDto.description,
+        price: updateProductDto.price,
+        stock: updateProductDto.stock,
+        category: {
+          connect: {
+            id: updateProductDto.categoryId,
+          },
+        },
+        images: {
+          createMany: {
+            data: addedImages.map((url) => ({
+              url,
+            })),
+          },
+          deleteMany: removedImages.map((image) => ({
+            id: image.id,
+          })),
+        },
+      },
       select: {
         id: true,
         name: true,
@@ -171,6 +239,14 @@ export class ProductsService {
             id: true,
             name: true,
             parentId: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+        images: {
+          select: {
+            id: true,
+            url: true,
             createdAt: true,
             updatedAt: true,
           },
@@ -202,6 +278,14 @@ export class ProductsService {
             id: true,
             name: true,
             parentId: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+        images: {
+          select: {
+            id: true,
+            url: true,
             createdAt: true,
             updatedAt: true,
           },

@@ -114,6 +114,14 @@ export class CartService {
                 updatedAt: true,
               },
             },
+            images: {
+              select: {
+                id: true,
+                url: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
             createdAt: true,
             updatedAt: true,
           },

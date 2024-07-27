@@ -27,6 +27,7 @@ const mockCartItem: CartItemEntity = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    images: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   },

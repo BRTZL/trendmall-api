@@ -1,8 +1,27 @@
 import { ApiProperty } from "@nestjs/swagger"
 
-import { Product as ProductModel } from "@prisma/client"
+import {
+  ProductImage as ProductImageModel,
+  Product as ProductModel,
+} from "@prisma/client"
 
 import { CategoryEntity } from "@modules/categories/entities/category.entity"
+
+export class ProductImageEntity
+  implements Omit<ProductImageModel, "productId" | "deletedAt">
+{
+  @ApiProperty()
+  id: string
+
+  @ApiProperty()
+  url: string
+
+  @ApiProperty()
+  createdAt: Date
+
+  @ApiProperty()
+  updatedAt: Date
+}
 
 export class ProductEntity
   implements Omit<ProductModel, "categoryId" | "deletedAt">
@@ -26,6 +45,12 @@ export class ProductEntity
     type: CategoryEntity,
   })
   category: CategoryEntity
+
+  @ApiProperty({
+    type: ProductImageEntity,
+    isArray: true,
+  })
+  images: ProductImageEntity[]
 
   @ApiProperty()
   createdAt: Date

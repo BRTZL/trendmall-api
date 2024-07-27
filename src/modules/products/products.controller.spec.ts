@@ -23,6 +23,7 @@ describe("ProductsController", () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
+    images: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   }
@@ -62,6 +63,7 @@ describe("ProductsController", () => {
         price: 100,
         stock: 10,
         categoryId: "2",
+        images: [],
       }
       const result = await controller.create(createProductDto)
       expect(result).toEqual(mockProduct)

@@ -1,6 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger"
 
-import { IsNotEmpty, IsNumber, IsString, IsUUID, Min } from "class-validator"
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+  Min,
+} from "class-validator"
 
 export class CreateProductDto {
   @IsString()
@@ -30,4 +37,9 @@ export class CreateProductDto {
   @IsUUID()
   @ApiProperty()
   categoryId: string
+
+  @IsArray()
+  @IsString({ each: true })
+  @ApiProperty()
+  images: string[]
 }
