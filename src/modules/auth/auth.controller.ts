@@ -28,6 +28,7 @@ export class AuthController {
     response.cookie("accessToken", res.accessToken, {
       httpOnly: true,
       secure: true,
+      sameSite: "lax",
     })
 
     return res
@@ -46,6 +47,7 @@ export class AuthController {
     response.cookie("accessToken", res.accessToken, {
       httpOnly: true,
       secure: true,
+      sameSite: "lax",
     })
 
     return res
