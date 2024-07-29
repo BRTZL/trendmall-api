@@ -39,6 +39,7 @@ export class AuthService {
 
     return {
       accessToken,
+      expiresIn: 60 * 60 * 24 * 30, // 30 days
     }
   }
 
@@ -60,6 +61,7 @@ export class AuthService {
 
     return {
       accessToken,
+      expiresIn: 60 * 60 * 24 * 30, // 30 days
     }
   }
 }

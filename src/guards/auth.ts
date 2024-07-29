@@ -77,7 +77,7 @@ export class AuthGuard implements CanActivate {
     // Check cookies
     const authCookie = request.cookies["accessToken"]
     if (authCookie) {
-      return authCookie.split(" ")[1]
+      return authCookie
     }
 
     return null
