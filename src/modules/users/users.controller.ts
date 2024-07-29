@@ -9,6 +9,7 @@ import {
 } from "@nestjs/common"
 import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiTags } from "@nestjs/swagger"
 
+import { Roles } from "@decorators/roles"
 import { User } from "@decorators/user"
 
 import { UpdateUserDto } from "./dto/update-user.dto"
@@ -23,12 +24,20 @@ export class UsersController {
 
   @Get("me")
   @ApiOkResponse({ type: UserEntity })
-  me(@User("id") userId: string) {
+  getMe(@User("id") userId: string) {
     return this.usersService.findOneById(userId)
+  }
+
+  @Patch("me")
+  @ApiOkResponse({ type: UserEntity })
+  @ApiBody({ type: UpdateUserDto })
+  updateMe(@User("id") userId: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(userId, updateUserDto)
   }
 
   @Get(":id")
   @ApiOkResponse({ type: UserEntity })
+  @Roles("ADMIN")
   findOne(@Param("id", ParseUUIDPipe) id: string) {
     return this.usersService.findOneById(id)
   }
@@ -36,6 +45,7 @@ export class UsersController {
   @Patch(":id")
   @ApiOkResponse({ type: UserEntity })
   @ApiBody({ type: UpdateUserDto })
+  @Roles("ADMIN")
   update(
     @Param("id", ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto
@@ -45,6 +55,7 @@ export class UsersController {
 
   @Delete(":id")
   @ApiOkResponse({ type: UserEntity })
+  @Roles("ADMIN")
   remove(@Param("id", ParseUUIDPipe) id: string) {
     return this.usersService.remove(id)
   }
