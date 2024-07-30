@@ -16,7 +16,11 @@ async function bootstrap() {
     defaultVersion: "1",
   })
   app.enableCors({
-    origin: true,
+    origin: [
+      "http://localhost:3000",
+      "https://trendmall-web.up.railway.app/",
+      "https://trendmall-web.vercel.app/",
+    ],
     credentials: true,
   })
 

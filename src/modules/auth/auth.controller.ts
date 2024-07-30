@@ -1,5 +1,7 @@
-import { Body, Controller, Post } from "@nestjs/common"
+import { Body, Controller, Post, Res } from "@nestjs/common"
 import { ApiBody, ApiOkResponse, ApiTags } from "@nestjs/swagger"
+
+import { Response } from "express"
 
 import { Public } from "@decorators/public"
 
@@ -17,15 +19,37 @@ export class AuthController {
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({ type: AuthEntity })
   @Public()
-  login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto)
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) response: Response
+  ) {
+    const res = await this.authService.login(loginDto)
+
+    response.cookie("accessToken", res.accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    })
+
+    return res
   }
 
   @Post("register")
   @ApiBody({ type: RegisterDto })
   @ApiOkResponse({ type: AuthEntity })
   @Public()
-  register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto)
+  async register(
+    @Body() registerDto: RegisterDto,
+    @Res({ passthrough: true }) response: Response
+  ) {
+    const res = await this.authService.register(registerDto)
+
+    response.cookie("accessToken", res.accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    })
+
+    return res
   }
 }
