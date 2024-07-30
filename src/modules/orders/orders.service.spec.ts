@@ -159,6 +159,7 @@ describe("OrdersService", () => {
       expect(mockPrismaService.order.findMany).toHaveBeenCalledWith({
         where: { userId, deletedAt: null },
         select: expect.any(Object),
+        orderBy: { createdAt: "desc" },
       })
     })
   })
