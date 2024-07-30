@@ -65,6 +65,8 @@ The server will start on `http://localhost:3001`.
 
 ## API Endpoints
 
+You can reach swagger documentation at `http://localhost:3001/docs`
+
 ### Auth
 
 - `POST /v1/auth/login`: Log in an existing user
