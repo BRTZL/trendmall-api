@@ -48,8 +48,8 @@ export class UsersService {
     return user
   }
 
-  async findOneByEmail(email: string): Promise<UserEntity> {
-    const user = await this.prisma.user.findUnique({
+  findOneByEmail(email: string): Promise<UserEntity> {
+    return this.prisma.user.findUnique({
       where: {
         email,
         deletedAt: null,
@@ -63,12 +63,6 @@ export class UsersService {
         updatedAt: true,
       },
     })
-
-    if (!user) {
-      throw new NotFoundException("User not found")
-    }
-
-    return user
   }
 
   async findRoleById(id: string): Promise<Pick<User, "role">> {
@@ -89,10 +83,10 @@ export class UsersService {
     return user
   }
 
-  async findOneByEmailWithPassword(
+  findOneByEmailWithPassword(
     email: string
   ): Promise<Pick<User, "id" | "email" | "password">> {
-    const user = await this.prisma.user.findUnique({
+    return this.prisma.user.findUnique({
       where: {
         email,
         deletedAt: null,
@@ -103,8 +97,6 @@ export class UsersService {
         password: true,
       },
     })
-
-    return user
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
