@@ -1,73 +1,151 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Trendmall Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Project Description
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Trendmall is a streamlined full-stack application focused on essential functionalities for an e-commerce system. This backend service is built using Nest.js and provides various functionalities such as product management, user authentication, and order processing.
 
-## Description
+## Prerequisites
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Before you begin, ensure you have met the following requirements:
+
+- Node.js (version 18.X.X)
+- Docker (version 25.X.X)
+- PostgreSQL (version 16.X)
+- Nest.js CLI (version 10.X.X)
 
 ## Installation
 
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/BRTZL/trendmall-api.git
+   ```
+
+2. **Navigate to the project directory:**
+
+   ```bash
+   cd trendmall-api
+   ```
+
+3. **Install the dependencies:**
+
+   ```bash
+   yarn install
+   ```
+
+4. **Set up the environment variables:**
+
+   Create a `.env` file in the root directory and add the necessary environment variables as specified in the `.env.example` file.
+
+## Usage
+
+### Running the Development Server
+
+To start the development server, run:
+
 ```bash
-$ yarn install
+yarn start:dev
 ```
 
-## Running the app
+The server will start on `http://localhost:3001`.
+
+### Running with Docker
+
+1. **Build the Docker image:**
+
+   ```bash
+   docker build -t trendmall-backend .
+   ```
+
+2. **Run the Docker container:**
+
+   ```bash
+   docker run -p 3001:3001 trendmall-backend
+   ```
+
+## API Endpoints
+
+### Auth
+
+- `POST /v1/auth/login`: Log in an existing user
+- `POST /v1/auth/register`: Register a new user
+
+### Users
+
+- `GET /v1/users/me`: Retrieve the current user
+- `PATCH /v1/users/me`: Update the current user
+- `GET /v1/users/{id}`: Retrieve a user by ID
+- `PATCH /v1/users/{id}`: Update a user by ID
+- `DELETE /v1/users/{id}`: Delete a user by ID
+
+### Categories
+
+- `POST /v1/categories`: Create a new category
+- `GET /v1/categories`: Retrieve all categories
+- `GET /v1/categories/{id}`: Retrieve a category by ID
+- `PATCH /v1/categories/{id}`: Update a category by ID
+- `DELETE /v1/categories/{id}`: Delete a category by ID
+
+### Products
+
+- `POST /v1/products`: Create a new product
+- `GET /v1/products`: Retrieve all products
+- `GET /v1/products/{id}`: Retrieve a product by ID
+- `PATCH /v1/products/{id}`: Update a product by ID
+- `DELETE /v1/products/{id}`: Delete a product by ID
+
+### Addresses
+
+- `POST /v1/addresses`: Create a new address
+- `GET /v1/addresses`: Retrieve all addresses
+- `GET /v1/addresses/{id}`: Retrieve an address by ID
+- `PATCH /v1/addresses/{id}`: Update an address by ID
+- `DELETE /v1/addresses/{id}`: Delete an address by ID
+
+### Cart
+
+- `POST /v1/cart/add`: Add an item to the cart
+- `POST /v1/cart/remove`: Remove an item from the cart
+- `GET /v1/cart`: Retrieve the current cart
+
+### Orders
+
+- `POST /v1/orders`: Create a new order
+- `GET /v1/orders`: Retrieve all orders
+- `GET /v1/orders/{id}`: Retrieve an order by ID
+
+## Testing
+
+To run the unit tests, use the following command:
 
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+yarn test
 ```
 
-## Test
+## Deployment
 
-```bash
-# unit tests
-$ yarn run test
+To deploy the project using Docker, follow these steps:
 
-# e2e tests
-$ yarn run test:e2e
+1. **Build the Docker image:**
 
-# test coverage
-$ yarn run test:cov
-```
+   ```bash
+   docker build -t trendmall-backend .
+   ```
 
-## Support
+2. **Run the Docker container:**
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+   ```bash
+   docker run -p 3000:3000 trendmall-backend
+   ```
 
-## Stay in touch
+For detailed deployment guidelines, refer to the Docker documentation.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Contributing
 
-## License
+To contribute to this project, follow these steps:
 
-Nest is [MIT licensed](LICENSE).
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-name`).
+3. Make your changes and commit them (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature-name`).
+5. Create a Pull Request.
