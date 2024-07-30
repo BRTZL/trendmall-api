@@ -84,6 +84,9 @@ export class OrdersService {
         deletedAt: null,
       },
       select: orderSelect,
+      orderBy: {
+        createdAt: "desc",
+      },
     })
   }
 

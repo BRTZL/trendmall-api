@@ -130,6 +130,9 @@ export class CartService {
         createdAt: true,
         updatedAt: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     })
   }
 }
