@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common"
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common"
 
 import { Prisma, User } from "@prisma/client"
 
@@ -48,21 +52,20 @@ export class UsersService {
     return user
   }
 
-  findOneByEmail(email: string): Promise<UserEntity> {
-    return this.prisma.user.findUnique({
+  async isUserExistWithEmail(email: string): Promise<void> {
+    const user = await this.prisma.user.findUnique({
       where: {
         email,
         deletedAt: null,
       },
       select: {
         id: true,
-        fullName: true,
-        email: true,
-        phoneNumber: true,
-        createdAt: true,
-        updatedAt: true,
       },
     })
+
+    if (user) {
+      throw new BadRequestException("User already exists with this email")
+    }
   }
 
   async findRoleById(id: string): Promise<Pick<User, "role">> {
@@ -83,10 +86,10 @@ export class UsersService {
     return user
   }
 
-  findOneByEmailWithPassword(
+  async findOneByEmailWithPassword(
     email: string
   ): Promise<Pick<User, "id" | "email" | "password">> {
-    return this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         email,
         deletedAt: null,
@@ -97,6 +100,12 @@ export class UsersService {
         password: true,
       },
     })
+
+    if (!user) {
+      throw new NotFoundException("User not found with this email")
+    }
+
+    return user
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {

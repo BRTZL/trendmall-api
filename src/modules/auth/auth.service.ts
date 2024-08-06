@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from "@nestjs/common"
+import { Injectable, UnauthorizedException } from "@nestjs/common"
 import { JwtService } from "@nestjs/jwt"
 
 import * as bcrypt from "bcryptjs"
@@ -26,28 +21,16 @@ export class AuthService {
   async login(dto: LoginDto): Promise<AuthEntity> {
     const user = await this.usersService.findOneByEmailWithPassword(dto.email)
 
-    if (!user) {
-      throw new NotFoundException("User not found with this email")
-    }
     const isMatch = await bcrypt.compare(dto.password, user.password)
     if (!isMatch) {
       throw new UnauthorizedException("Invalid password")
     }
 
-    const payload = { sub: user.id, email: user.email }
-    const accessToken = await this.jwtService.signAsync(payload)
-
-    return {
-      accessToken,
-      expiresIn: 60 * 60 * 24 * 30, // 30 days
-    }
+    return this.createToken(user.id, user.email)
   }
 
   async register(dto: RegisterDto): Promise<AuthEntity> {
-    const existingUser = await this.usersService.findOneByEmail(dto.email)
-    if (existingUser) {
-      throw new BadRequestException("User already exists with this email")
-    }
+    await this.usersService.isUserExistWithEmail(dto.email)
 
     const hashPass = await bcrypt.hash(dto.password, this.saltOrRounds)
 
@@ -56,7 +39,11 @@ export class AuthService {
       password: hashPass,
     })
 
-    const payload = { sub: user.id, email: user.email }
+    return this.createToken(user.id, user.email)
+  }
+
+  private async createToken(sub: string, email: string): Promise<AuthEntity> {
+    const payload = { sub, email }
     const accessToken = await this.jwtService.signAsync(payload)
 
     return {

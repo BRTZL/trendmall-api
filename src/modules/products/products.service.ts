@@ -6,7 +6,8 @@ import { PrismaService } from "src/prisma/prisma.service"
 
 import { CategoriesService } from "@modules/categories/categories.service"
 
-import { ProductPaginationResult } from "@decorators/pagination"
+import { PaginationResult } from "@decorators/pagination"
+import { ProductFilterResult } from "@decorators/product-filter"
 
 import { CreateProductDto } from "./dto/create-product.dto"
 import { UpdateProductDto } from "./dto/update-product.dto"
@@ -72,34 +73,21 @@ export class ProductsService {
   }
 
   async findAll(
-    pagination: ProductPaginationResult
+    pagination: PaginationResult,
+    { query, inStock, categoryIds }: ProductFilterResult
   ): Promise<PaginationProductEntity> {
     const where: Prisma.ProductWhereInput = {
       deletedAt: null,
-      stock: pagination.filters.inStock
-        ? {
-            gt: 0,
-          }
-        : undefined,
-      categoryId: pagination.filters.categoryId
-        ? {
-            in: pagination.filters.categoryId,
-          }
-        : undefined,
-      OR: pagination.filters.query
-        ? [
-            {
-              name: {
-                contains: pagination.filters.query,
-              },
-            },
-            {
-              description: {
-                contains: pagination.filters.query,
-              },
-            },
-          ]
-        : undefined,
+      AND: [
+        inStock && { stock: { gt: 0 } },
+        categoryIds && { categoryId: { in: categoryIds } },
+        query && {
+          OR: [
+            { name: { contains: query } },
+            { description: { contains: query } },
+          ],
+        },
+      ].filter(Boolean),
     }
 
     const [total, products] = await Promise.all([

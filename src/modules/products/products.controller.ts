@@ -16,10 +16,8 @@ import {
   ApiTags,
 } from "@nestjs/swagger"
 
-import {
-  ProductPagination,
-  ProductPaginationResult,
-} from "@decorators/pagination"
+import { Pagination, PaginationResult } from "@decorators/pagination"
+import { ProductFilter, ProductFilterResult } from "@decorators/product-filter"
 import { Public } from "@decorators/public"
 import { Roles } from "@decorators/roles"
 
@@ -48,8 +46,11 @@ export class ProductsController {
   @ApiOkResponse({ type: PaginationProductEntity })
   @ApiQuery({ type: ProductPaginationDto })
   @Public()
-  findAll(@ProductPagination() pagination: ProductPaginationResult) {
-    return this.productsService.findAll(pagination)
+  findAll(
+    @Pagination() pagination: PaginationResult,
+    @ProductFilter() filters: ProductFilterResult
+  ) {
+    return this.productsService.findAll(pagination, filters)
   }
 
   @Get(":id")
